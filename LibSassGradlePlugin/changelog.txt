@@ -1,0 +1,5 @@
+=================
+1.0 (2016-03-29)
+=================
+- Task "compileLibSass" : Compile sass/scss files to css (with optional source map) with LibSass
+- Task "compileLibSassWithWatch" : Continuous compilation of sass/scss files to css (with optional source map) with LibSass
