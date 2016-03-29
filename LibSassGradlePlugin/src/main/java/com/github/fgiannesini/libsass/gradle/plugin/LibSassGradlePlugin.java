@@ -1,12 +1,12 @@
-package com.fabien.giannesini.libsass.gradle.plugin;
+package com.github.fgiannesini.libsass.gradle.plugin;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskContainer;
 
-import com.fabien.giannesini.libsass.gradle.plugin.extension.LibSassParameters;
-import com.fabien.giannesini.libsass.gradle.plugin.tasks.CompileLibSassTask;
-import com.fabien.giannesini.libsass.gradle.plugin.tasks.CompileLibSassWithWatchTask;
+import com.github.fgiannesini.libsass.gradle.plugin.extension.LibSassParameters;
+import com.github.fgiannesini.libsass.gradle.plugin.tasks.CompileLibSassTask;
+import com.github.fgiannesini.libsass.gradle.plugin.tasks.CompileLibSassWithWatchTask;
 
 /**
  * Gradle plugin declaration

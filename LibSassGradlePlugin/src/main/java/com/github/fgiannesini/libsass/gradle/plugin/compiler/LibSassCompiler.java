@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.compiler;
+package com.github.fgiannesini.libsass.gradle.plugin.compiler;
 
 import java.io.File;
 import java.io.IOException;

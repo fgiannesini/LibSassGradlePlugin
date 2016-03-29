@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.tasks;
+package com.github.fgiannesini.libsass.gradle.plugin.tasks;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -9,10 +9,10 @@ import java.util.function.Consumer;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
 
-import com.fabien.giannesini.libsass.gradle.plugin.compiler.LibSassCompiler;
-import com.fabien.giannesini.libsass.gradle.plugin.compiler.PluginInputSyntax;
-import com.fabien.giannesini.libsass.gradle.plugin.compiler.PluginOutputStyle;
-import com.fabien.giannesini.libsass.gradle.plugin.extension.LibSassParameters;
+import com.github.fgiannesini.libsass.gradle.plugin.compiler.LibSassCompiler;
+import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginInputSyntax;
+import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginOutputStyle;
+import com.github.fgiannesini.libsass.gradle.plugin.extension.LibSassParameters;
 
 import io.bit3.jsass.CompilationException;
 import lombok.Getter;

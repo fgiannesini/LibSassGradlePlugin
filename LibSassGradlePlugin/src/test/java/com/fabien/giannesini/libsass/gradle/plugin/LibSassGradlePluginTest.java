@@ -5,7 +5,7 @@ import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fabien.giannesini.libsass.gradle.plugin.tasks.CompileLibSassTask;
+import com.github.fgiannesini.libsass.gradle.plugin.tasks.CompileLibSassTask;
 
 public class LibSassGradlePluginTest {
 

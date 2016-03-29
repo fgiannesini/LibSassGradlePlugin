@@ -12,6 +12,7 @@ import org.junit.rules.TemporaryFolder;
 import org.testng.Assert;
 
 import com.fabien.giannesini.libsass.gradle.plugin.TestLogger;
+import com.github.fgiannesini.libsass.gradle.plugin.compiler.LibSassCompiler;
 
 import io.bit3.jsass.CompilationException;
 

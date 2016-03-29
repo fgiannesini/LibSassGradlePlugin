@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.compiler;
+package com.github.fgiannesini.libsass.gradle.plugin.compiler;
 
 /**
  * Enum for output style

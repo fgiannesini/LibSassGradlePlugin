@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.tasks;
+package com.github.fgiannesini.libsass.gradle.plugin.tasks;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;

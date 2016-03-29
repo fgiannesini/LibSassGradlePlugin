@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.tasks;
+package com.github.fgiannesini.libsass.gradle.plugin.tasks;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

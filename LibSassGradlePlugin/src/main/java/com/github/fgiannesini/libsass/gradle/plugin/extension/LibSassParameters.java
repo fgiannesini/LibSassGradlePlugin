@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.extension;
+package com.github.fgiannesini.libsass.gradle.plugin.extension;
 
 import lombok.Getter;
 import lombok.Setter;
