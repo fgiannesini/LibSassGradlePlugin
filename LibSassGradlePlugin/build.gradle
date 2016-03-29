@@ -4,7 +4,7 @@ apply plugin: 'findbugs'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-group = 'com.libsass.gradle.plugin'
+group = 'com.github.fgiannesini.libsass.gradle.plugin'
 version = '1.0'
 archivesBaseName = rootProject.name
 
@@ -16,13 +16,13 @@ repositories {
 
 dependencies {
 
-	compile 'io.bit3:jsass:4.1.+'
+	compile 'io.bit3:jsass:4.1.0'
 	
- 	compileOnly 'org.projectlombok:lombok:+'
+ 	compileOnly 'org.projectlombok:lombok:1.16.8'
  	
     testCompile (
-    	'junit:junit:+',
-    	'org.projectlombok:lombok:+'
+    	'junit:junit:4.12',
+    	'org.projectlombok:lombok:1.16.8'
     )
 }
 
