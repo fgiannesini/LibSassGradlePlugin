@@ -1,10 +1,12 @@
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
 apply plugin: 'findbugs'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'com.libsass.gradle.plugin'
 version = '1.0'
+archivesBaseName = rootProject.name
 
 sourceCompatibility = 1.8
 
@@ -22,9 +24,77 @@ dependencies {
     	'junit:junit:+',
     	'org.projectlombok:lombok:+'
     )
-    
 }
 
+task javadocJar(type: Jar) {
+	description 'Generation of javadoc'
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	description 'Generation of sources'
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+/*============ Maven deplayment configuration ===========*/
+
+/* Automatic generation of javadoc and sources on deployment */
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name rootProject.name
+        packaging 'jar'
+        // optionally artifactId can be defined here 
+        description 'A gradle plugin to compile scss with libsass.'
+        url 'https://github.com/fgiannesini/LibSassGradlePlugin'
+
+        scm {
+          connection 'scm:git:https://github.com/fgiannesini/LibSassGradlePlugin'
+          developerConnection 'scm:git:https://github.com/fgiannesini/LibSassGradlePlugin.git'
+          url 'https://github.com/fgiannesini/LibSassGradlePlugin.git'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        
+        developers {
+          developer {
+            id 'fgiannesini'
+            name 'Fabien GIANNESINI'
+            email 'fabien.giannesini@gmail.com'
+          }
+        }
+      }
+    }
+  }
+}
+
+/*============ Gradle update ===========*/
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
