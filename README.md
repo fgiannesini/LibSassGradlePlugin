@@ -5,22 +5,24 @@ A gradle plugin to compile scss/sass with jsass (libsass wrapper for java)
 
 ##Available tasks
 - **compileLibSass** : Compile sass/scss files to css (with optional source map) with LibSass
-- **compileLibSassWithWatch** : Continous compilation of sass/scss files to css (with optional source map) with LibSass
+- **compileLibSassWithWatch** : Continuous compilation of sass/scss files to css (with optional source map) with LibSass
+
+##Next (If possible)
+- Task to install compass
+- Task to install bourbon
 
 ##Configuration
 
 ```groovy
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'com.libsass.gradle.plugin'
+apply plugin: 'com.github.fgiannesini.libsass.gradle.plugin'
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.libsass.gradle.plugin:libsass-gradle-plugin:+'
+        classpath 'com.github.fgiannesini.libsass.gradle.plugin:libsass-gradle-plugin:+'
     }
 }
 
