@@ -15,10 +15,14 @@ public class LibSassGradlePlugin implements Plugin<Project> {
 
     @Override
     public void apply(final Project project) {
+    	//Class for definition of availables  parameters
         project.getExtensions().create("libSassParameters",
                 LibSassParameters.class);
+        
         final TaskContainer tasks = project.getTasks();
+        //Task for libsass compilation
         tasks.create("compileLibSass", CompileLibSassTask.class);
+        //Task for continous compilation
         tasks.create("compileLibSassWithWatch",
                 CompileLibSassWithWatchTask.class);
     }
