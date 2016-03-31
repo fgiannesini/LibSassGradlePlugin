@@ -49,6 +49,7 @@ signing {
     sign configurations.archives
 }
 
+/*
 uploadArchives {
   repositories {
     mavenDeployer {
@@ -93,6 +94,7 @@ uploadArchives {
     }
   }
 }
+*/
 
 /*============ Gradle update ===========*/
 task wrapper(type: Wrapper) {
