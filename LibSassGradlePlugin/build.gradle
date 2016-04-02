@@ -16,7 +16,9 @@ repositories {
 
 dependencies {
 
-	compile 'io.bit3:jsass:4.1.0'
+	compile ('io.bit3:jsass:4.1.+',
+		'org.jruby:jruby-complete:1.+')
+	
 	
  	compileOnly 'org.projectlombok:lombok:1.16.8'
  	
