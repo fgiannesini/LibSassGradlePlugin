@@ -75,5 +75,21 @@ libSassParameters {
 	//';' is the path separator for Windows
 	//':' is the path separator for Linux
 	//includePaths "src/main/resources/scss-lib"
+	
+	//Type: String
+    	//Installation folder for bourbon sources
+    	bourbonInstallationPath "src/main/resources/scss"
+
+	//Type: String
+    	//If a specific version of bourbon is necessary, last by defaut
+    	//bourbonVersion "4.2.6"
+
+	//Type: String
+    	//Installation folder for compass sources
+    	compassInstallationPath "src/main/resources/scss"
+
+	//Type: String
+    	//If a specific version of compass is necessary, last by defaut
+    	//compassVersion "1.0.3"
 }
 ```
