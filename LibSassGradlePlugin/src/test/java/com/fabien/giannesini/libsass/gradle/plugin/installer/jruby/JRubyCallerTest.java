@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin.jruby;
+package com.fabien.giannesini.libsass.gradle.plugin.installer.jruby;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.fabien.giannesini.libsass.gradle.plugin.TestLogger;
-import com.github.fgiannesini.libsass.gradle.plugin.jruby.JRubyCaller;
+import com.github.fgiannesini.libsass.gradle.plugin.installer.jruby.JRubyCaller;
 
 public class JRubyCallerTest {
 
@@ -21,7 +21,7 @@ public class JRubyCallerTest {
 
     @Test
     public void launchCompassDownload() throws IOException {
-        final String gemName = "compass";
+        final String gemName = "compass-core";
         final JRubyCaller jRubyCaller = new JRubyCaller(new TestLogger());
         final File file = jRubyCaller.unpack(gemName, null);
         Assert.assertTrue(file.exists());

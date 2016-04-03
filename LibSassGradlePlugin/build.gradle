@@ -4,11 +4,15 @@ apply plugin: 'findbugs'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+/*============ Project Properties ===========*/
+
 group = 'com.github.fgiannesini.libsass.gradle.plugin'
 version = '1.0'
 archivesBaseName = rootProject.name
 
 sourceCompatibility = 1.8
+
+/*============ Dependencies ===========*/
 
 repositories {
     mavenCentral()
@@ -28,6 +32,8 @@ dependencies {
     )
 }
 
+/*============ Maven deplayment configuration ===========*/
+
 task javadocJar(type: Jar) {
 	description 'Generation of javadoc'
     classifier = 'javadoc'
@@ -39,8 +45,6 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-
-/*============ Maven deplayment configuration ===========*/
 
 /* Automatic generation of javadoc and sources on deployment */
 artifacts {
@@ -97,6 +101,14 @@ uploadArchives {
   }
 }
 */
+
+/*============ FindBugs configuration ===========*/
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
 
 /*============ Gradle update ===========*/
 task wrapper(type: Wrapper) {

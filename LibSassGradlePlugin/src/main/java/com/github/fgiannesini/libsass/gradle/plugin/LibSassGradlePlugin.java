@@ -8,6 +8,7 @@ import com.github.fgiannesini.libsass.gradle.plugin.extension.LibSassParameters;
 import com.github.fgiannesini.libsass.gradle.plugin.tasks.CompileLibSassTask;
 import com.github.fgiannesini.libsass.gradle.plugin.tasks.CompileLibSassWithWatchTask;
 import com.github.fgiannesini.libsass.gradle.plugin.tasks.InstallBourbonTask;
+import com.github.fgiannesini.libsass.gradle.plugin.tasks.InstallCompassTask;
 
 /**
  * Gradle plugin declaration
@@ -31,6 +32,9 @@ public class LibSassGradlePlugin implements Plugin<Project> {
 
         // Task to install Bourbon sources
         tasks.create("installBourbon", InstallBourbonTask.class);
+
+        // Task to install Compass sources
+        tasks.create("installCompass", InstallCompassTask.class);
     }
 
 }

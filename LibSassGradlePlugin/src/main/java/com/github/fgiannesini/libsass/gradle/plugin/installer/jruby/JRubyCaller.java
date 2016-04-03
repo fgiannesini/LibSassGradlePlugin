@@ -1,4 +1,4 @@
-package com.github.fgiannesini.libsass.gradle.plugin.jruby;
+package com.github.fgiannesini.libsass.gradle.plugin.installer.jruby;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JRubyCaller {
 
+    /**
+     * Gradle logger
+     */
     private final Logger logger;
 
     /**
@@ -33,7 +36,7 @@ public class JRubyCaller {
         this.logger.info("Downloading " + gemName);
 
         // Generating temporary folder for gemUnpacking
-        final File folder = File.createTempFile("gem", "");
+        final File folder = File.createTempFile(gemName, "");
         FileUtils.deleteQuietly(folder);
         FileUtils.forceMkdir(folder);
         FileUtils.forceDeleteOnExit(folder);
