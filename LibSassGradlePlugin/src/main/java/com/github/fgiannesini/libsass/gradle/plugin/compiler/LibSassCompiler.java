@@ -87,31 +87,22 @@ public class LibSassCompiler {
         }
         final io.bit3.jsass.Compiler compiler = new io.bit3.jsass.Compiler();
 
-        // jsass version 5, errors from exception not displayed
-        // try {
-        final Output output = compiler.compileFile(inputFileURI, outputFileURI,
-                this.options);
+        try {
+            final Output output = compiler.compileFile(inputFileURI,
+                    outputFileURI, this.options);
 
-        if (this.logger.isInfoEnabled()) {
-            this.logger.info("End of compilation");
+            if (this.logger.isInfoEnabled()) {
+                this.logger.info("End of compilation");
+            }
+            return output;
+        } catch (final CompilationException compilationException) {
+            this.logger.error(compilationException.getErrorFile());
+            this.logger.error(compilationException.getErrorJson());
+            this.logger.error(compilationException.getErrorMessage());
+            this.logger.error(compilationException.getErrorSrc());
+            this.logger.error(compilationException.getErrorText());
+            throw compilationException;
         }
-
-        // } catch (final CompilationException compilationException) {
-        // this.logger.error(compilationException.getErrorFile());
-        // this.logger.error(compilationException.getErrorJson());
-        // this.logger.error(compilationException.getErrorMessage());
-        // this.logger.error(compilationException.getErrorSrc());
-        // this.logger.error(compilationException.getErrorText());
-        // throw compilationException;
-        // }
-        if (output.getErrorStatus() != 0) {
-            this.logger.error(output.getErrorFile());
-            this.logger.error(output.getErrorJson());
-            this.logger.error(output.getErrorMessage());
-            this.logger.error(output.getErrorSrc());
-            this.logger.error(output.getErrorText());
-        }
-        return output;
     }
 
     /**

@@ -63,7 +63,7 @@ public class LibSassCompilerTest {
         Mockito.verify(this.logger, Mockito.never()).error(Mockito.anyString());
     }
 
-    @Test
+    @Test(expected = CompilationException.class)
     public void launchCompilation_Incorrect_Css()
             throws IOException, CompilationException {
         // Prepare
@@ -89,8 +89,7 @@ public class LibSassCompilerTest {
         final LibSassCompiler compiler = new LibSassCompiler(this.logger);
         final File sourceMapFile = this.folder.newFile();
         compiler.setSourceMapFile(sourceMapFile);
-        final Output output = new Output(null, "sourceMap", 0, null, null, null,
-                null, null);
+        final Output output = new Output(null, "sourceMap");
 
         // Call
         compiler.generateSourceMap(output);
@@ -108,8 +107,7 @@ public class LibSassCompilerTest {
         final LibSassCompiler compiler = new LibSassCompiler(this.logger);
         final File sourceMapFile = this.folder.newFile();
         compiler.setSourceMapFile(sourceMapFile);
-        final Output output = new Output(null, null, 0, null, null, null, null,
-                null);
+        final Output output = new Output(null, null);
 
         // Call
         compiler.generateSourceMap(output);
@@ -127,8 +125,7 @@ public class LibSassCompilerTest {
         final LibSassCompiler compiler = new LibSassCompiler(this.logger);
         final File sourceMapFile = new File("");
         compiler.setSourceMapFile(sourceMapFile);
-        final Output output = new Output(null, "sourceMap", 0, null, null, null,
-                null, null);
+        final Output output = new Output(null, "sourceMap");
 
         // Call
         compiler.generateSourceMap(output);
@@ -143,8 +140,7 @@ public class LibSassCompilerTest {
         // Prepare
         final LibSassCompiler compiler = new LibSassCompiler(this.logger);
         final File outputFile = this.folder.newFile();
-        final Output output = new Output("css", null, 0, null, null, null, null,
-                null);
+        final Output output = new Output("css", null);
 
         // Call
         compiler.writeCss(outputFile, output);
@@ -163,8 +159,7 @@ public class LibSassCompilerTest {
         final File outputFile = new File(
                 this.folder.getRoot().getAbsolutePath() + File.separator + "?");
 
-        final Output output = new Output("css", null, 0, null, null, null, null,
-                null);
+        final Output output = new Output("css", null);
 
         // Call
         compiler.writeCss(outputFile, output);
