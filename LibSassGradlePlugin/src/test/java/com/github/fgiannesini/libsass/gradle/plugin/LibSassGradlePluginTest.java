@@ -1,4 +1,4 @@
-package com.fabien.giannesini.libsass.gradle.plugin;
+package com.github.fgiannesini.libsass.gradle.plugin;
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;

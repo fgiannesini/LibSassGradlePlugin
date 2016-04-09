@@ -55,9 +55,13 @@ public class ScssFrameworkInstaller {
     public void installFramework(
             final FrameworkPropertiesEnum frameworkProperties)
             throws Exception {
-        final JRubyCaller jrubyCaller = new JRubyCaller(this.logger);
-        final File folder = jrubyCaller.unpack(frameworkProperties.getGemName(),
-                this.versionToDownload);
+        final File folder = this.downloadSources(frameworkProperties);
+        this.installSources(frameworkProperties, folder);
+    }
+
+    private void installSources(
+            final FrameworkPropertiesEnum frameworkProperties,
+            final File folder) throws Exception {
         try {
             final File sourcesFolder = this
                     .getSourcesFolder(frameworkProperties, folder);
@@ -68,6 +72,15 @@ public class ScssFrameworkInstaller {
         } finally {
             FileUtils.deleteDirectory(folder);
         }
+    }
+
+    private File downloadSources(
+            final FrameworkPropertiesEnum frameworkProperties)
+            throws IOException {
+        final JRubyCaller jrubyCaller = new JRubyCaller(this.logger);
+        final File folder = jrubyCaller.unpack(frameworkProperties.getGemName(),
+                this.versionToDownload);
+        return folder;
     }
 
     protected void copySourcesToInstallationPath(final File sourcesFolder,

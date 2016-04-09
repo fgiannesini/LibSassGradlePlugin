@@ -12,7 +12,6 @@ import org.gradle.api.logging.Logger;
 
 /**
  * Specific installer for Compass
- *
  */
 public class CompassInstaller extends ScssFrameworkInstaller {
 
@@ -23,8 +22,7 @@ public class CompassInstaller extends ScssFrameworkInstaller {
     @Override
     protected void copySourcesToInstallationPath(final File sourcesFolder,
             final Path installationPath) throws IOException {
-        final int level = 0;
-        this.correctFilesImports(sourcesFolder, level);
+        this.correctFilesImports(sourcesFolder, 0);
         super.copySourcesToInstallationPath(sourcesFolder, installationPath);
     }
 
@@ -37,10 +35,11 @@ public class CompassInstaller extends ScssFrameworkInstaller {
      *
      * @param sourcesFolder
      * @param level
+     *            Folder depth in recursion
      * @throws IOException
      */
-    private void correctFilesImports(final File sourcesFolder, final int level)
-            throws IOException {
+    protected void correctFilesImports(final File sourcesFolder,
+            final int level) throws IOException {
         final File[] listFiles = sourcesFolder.listFiles();
         if (listFiles == null) {
             return;
