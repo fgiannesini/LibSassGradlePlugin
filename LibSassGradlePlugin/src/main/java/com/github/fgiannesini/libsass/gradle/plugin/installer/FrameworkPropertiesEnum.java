@@ -14,7 +14,7 @@ import lombok.Getter;
 @Getter
 public enum FrameworkPropertiesEnum {
 
-    BOURBON("bourbon", Paths.get("app", "assets", "stylesheets"), "bouron"),
+    BOURBON("bourbon", Paths.get("app", "assets", "stylesheets"), "bourbon"),
 
     COMPASS("compass-core", Paths.get("stylesheets"), "compass");
 
