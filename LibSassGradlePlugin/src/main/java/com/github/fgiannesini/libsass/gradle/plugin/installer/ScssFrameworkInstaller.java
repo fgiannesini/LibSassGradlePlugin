@@ -86,7 +86,7 @@ public class ScssFrameworkInstaller {
     protected void copySourcesToInstallationPath(final File sourcesFolder,
             final Path installationPath) throws IOException {
         final File[] listFiles = sourcesFolder.listFiles();
-        if (listFiles == null) {
+        if (listFiles == null || listFiles.length == 0) {
             this.logger.error(
                     "No files in folder " + sourcesFolder.getAbsolutePath());
             return;
@@ -113,7 +113,7 @@ public class ScssFrameworkInstaller {
      * @return
      * @throws IOException
      */
-    private Path getInstallationPath(final String folderInstallationName)
+    protected Path getInstallationPath(final String folderInstallationName)
             throws IOException {
         if (this.installationPath == null) {
             throw new IOException(
@@ -137,15 +137,13 @@ public class ScssFrameworkInstaller {
      * @return
      * @throws Exception
      */
-    private File getSourcesFolder(
+    protected File getSourcesFolder(
             final FrameworkPropertiesEnum frameworkProperties,
             final File folder) throws Exception {
-        this.checkFolder(frameworkProperties.getGemName(), folder);
-        final File[] listFiles = folder.listFiles();
-        if (listFiles == null) {
-            return null;
-        }
-        final File sourcesFolder = Paths.get(listFiles[0].getAbsolutePath())
+        final File unpackedSourceFolder = this.getAndCheckUnpackedSourceFolder(
+                frameworkProperties.getGemName(), folder);
+        final File sourcesFolder = Paths
+                .get(unpackedSourceFolder.getAbsolutePath())
                 .resolve(frameworkProperties.getInternalGemSourcesPath())
                 .toFile();
         this.logger.info(frameworkProperties + " sources folder : "
@@ -154,19 +152,21 @@ public class ScssFrameworkInstaller {
     }
 
     /**
-     * Check that unpack folder is correct, ie contains only one directory
+     * Check that unpack folder is correct, ie contains only one directory and
+     * return it
      *
      * @param gemName
      * @param folder
      *
      * @throws Exception
      */
-    private void checkFolder(final String gemName, final File folder)
-            throws Exception {
+    protected File getAndCheckUnpackedSourceFolder(final String gemName,
+            final File folder) throws Exception {
         final File[] unpackedFiles = folder.listFiles();
-        if (unpackedFiles == null) {
+        if (unpackedFiles == null || unpackedFiles.length == 0) {
             this.logger.error("No files in folder " + folder.getAbsolutePath());
-            return;
+            throw new Exception("A problem occured while retrieving " + gemName
+                    + " sources files");
         }
         if (unpackedFiles.length != 1) {
             this.logger.error("Folder " + folder.getAbsolutePath()
@@ -174,7 +174,8 @@ public class ScssFrameworkInstaller {
             Arrays.stream(unpackedFiles).map(File::getName)
                     .forEach(this.logger::error);
             throw new Exception("A problem occured while retrieving " + gemName
-                    + "sources files");
+                    + " sources files");
         }
+        return unpackedFiles[0];
     }
 }
