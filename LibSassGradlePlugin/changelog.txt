@@ -1,4 +1,12 @@
 =================
+1.1 (2016-04-10)
+=================
+-Task "installBourbon" : import bourbon scss source files in current project
+-Task "installCompass" : import compass scss source files in current project
+-Update to jsass 5.1 (Libsass 3.3.4)
+-Correct compileLibSassWithWatch (thread stopped on compilation error)
+
+=================
 1.0 (2016-03-29)
 =================
 - Task "compileLibSass" : Compile sass/scss files to css (with optional source map) with LibSass
