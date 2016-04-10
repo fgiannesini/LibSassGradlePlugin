@@ -3,7 +3,6 @@ package com.github.fgiannesini.libsass.gradle.plugin.installer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -67,17 +66,44 @@ public class CompassInstaller extends ScssFrameworkInstaller {
      */
     private void correctFileImport(final int level, final File file)
             throws IOException {
-        this.logger
-                .info("Correcting imports in compass file " + file.getName());
-        final List<String> lines = FileUtils.readLines(file);
-        for (int i = 0; i < lines.size(); i++) {
-            final String line = lines.get(i);
-            if (line.trim().startsWith("@import")) {
-                final String originFolderPath = StringUtils.repeat("../", level)
-                        + "compass/";
-                lines.set(i, line.replaceAll("compass/", originFolderPath));
-            }
+        this.logger.info("Correcting compass file " + file.getName());
+        String fileContent = FileUtils.readFileToString(file);
+        fileContent = this.correctImport(level, fileContent);
+        fileContent = this.correctRubyFunctionCall(fileContent);
+        FileUtils.writeStringToFile(file, fileContent);
+    }
+
+    /**
+     * Compass calls "prefix-usage", a ruby function from compass gem. An error
+     * is thrown by Libsass on compilation. This function is used to make stats
+     * to avoid deprecated browser prefixes. The choice here is to replace this
+     * function by a constant to always add prefixes even if they are
+     * deprecated. (https://github.com/sass/libsass/issues/1936)
+     *
+     * @param line
+     * @return
+     */
+    private String correctRubyFunctionCall(String line) {
+        final String stringToReplace = "prefix-usage";
+        if (line.contains(stringToReplace)) {
+            line = line.replace(stringToReplace, "0;//prefix-usage");
         }
-        FileUtils.writeLines(file, lines);
+        return line;
+    }
+
+    /**
+     * Correct import path, compass uses absolute path, libsass needs relative
+     * path.
+     *
+     * @param level
+     * @param fileContent
+     * @return
+     */
+    private String correctImport(final int level, String fileContent) {
+        final String originFolderPath = new StringBuilder("\"")
+                .append(StringUtils.repeat("../", level)).append("compass/")
+                .toString();
+        fileContent = fileContent.replaceAll("\"compass/", originFolderPath);
+        return fileContent;
     }
 }

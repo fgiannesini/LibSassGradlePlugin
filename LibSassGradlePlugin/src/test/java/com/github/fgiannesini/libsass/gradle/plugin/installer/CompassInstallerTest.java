@@ -33,27 +33,42 @@ public class CompassInstallerTest {
         final CompassInstaller compassInstaller = new CompassInstaller(
                 this.project, this.logger);
 
+        // Level 0
         final File scssFileLevel0 = this.folder.newFile(".scss");
-        FileUtils.write(scssFileLevel0, "@import compass/test0");
+        FileUtils.write(scssFileLevel0, "@import \"compass/test0\"");
+
         final File folderLevel0 = this.folder.newFolder();
+
+        // Level 1
         final File scssFileLevel1 = Paths
                 .get(folderLevel0.getAbsolutePath(), ".scss").toFile();
-        FileUtils.write(scssFileLevel1, System.lineSeparator()
-                + System.lineSeparator() + "     @import compass/test10");
+        final String scssFileLevel1Input = new StringBuilder(
+                System.lineSeparator())
+                        .append("     @import \"compass/test10\"")
+                        .append(System.lineSeparator())
+                        .append("$usage: prefix-usage($prefix, $capability, $capability-options);")
+                        .toString();
+        FileUtils.write(scssFileLevel1, scssFileLevel1Input);
+
         final File txtFileLevel1 = Paths
                 .get(folderLevel0.getAbsolutePath(), ".txt").toFile();
-        FileUtils.write(txtFileLevel1, "import compass/test11");
+        FileUtils.write(txtFileLevel1, "import \"compass/test11\"");
 
         // Call
         compassInstaller.correctFilesImports(this.folder.getRoot(), 0);
 
         // Check
-        Assert.assertEquals("@import compass/test0" + System.lineSeparator(),
+        Assert.assertEquals("@import \"compass/test0\"",
                 FileUtils.readFileToString(scssFileLevel0));
-        Assert.assertEquals(System.lineSeparator() + System.lineSeparator()
-                + "     @import ../compass/test10" + System.lineSeparator(),
+        final String scssFileLvel1Result = new StringBuilder(
+                System.lineSeparator())
+                        .append("     @import \"../compass/test10\"")
+                        .append(System.lineSeparator())
+                        .append("$usage: 0;//prefix-usage($prefix, $capability, $capability-options);")
+                        .toString();
+        Assert.assertEquals(scssFileLvel1Result,
                 FileUtils.readFileToString(scssFileLevel1));
-        Assert.assertEquals("import compass/test11",
+        Assert.assertEquals("import \"compass/test11\"",
                 FileUtils.readFileToString(txtFileLevel1));
     }
 }
