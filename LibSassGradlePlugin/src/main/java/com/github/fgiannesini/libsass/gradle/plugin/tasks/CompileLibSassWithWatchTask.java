@@ -64,7 +64,12 @@ public class CompileLibSassWithWatchTask extends DefaultTask {
 
                     logger.info(kind.name() + ": " + fileName);
 
-                    compileLibSassTaskDelegate.compile();
+                    try {
+                        compileLibSassTaskDelegate.compile();
+                    } catch (final CompilationException ce) {
+                        logger.error(
+                                "Error during compilation, see above for details");
+                    }
                 }
 
                 final boolean valid = key.reset();
