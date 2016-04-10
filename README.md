@@ -4,12 +4,25 @@ A gradle plugin to compile scss/sass with jsass (libsass wrapper for java)
 - _Need Java Version >= 8_
 
 ##Available tasks
+_1.0_
 - **compileLibSass** : Compile sass/scss files to css (with optional source map) with LibSass
 - **compileLibSassWithWatch** : Continuous compilation of sass/scss files to css (with optional source map) with LibSass
 
-##Next (If possible)
-- Task to install compass
-- Task to install bourbon
+_1.1_
+- **installBourbon** : import bourbon scss source files in current project
+- **installCompass** : import compass scss source files in current project
+
+##Next
+- Maintenance
+
+##Limitations
+- **installCompass** : Source modifications are applied by the plugin to avoir compilation errors:
+  * Correct import path, compass uses absolute path, libsass needs relative path.
+  * Compass calls "prefix-usage", a ruby function from compass gem. An error is thrown by Libsass on compilation.
+This function is used to make stats to avoid deprecated browser prefixes. 
+The choice here is to replace this function by a constant to always add prefixes even if they are deprecated. 
+(workaround: https://github.com/sass/libsass/issues/1936)
+
 
 ##Configuration
 
