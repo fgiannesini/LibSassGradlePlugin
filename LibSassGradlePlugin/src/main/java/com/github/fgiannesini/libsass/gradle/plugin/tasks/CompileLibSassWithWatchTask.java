@@ -20,73 +20,83 @@ import io.bit3.jsass.CompilationException;
  *
  */
 public class CompileLibSassWithWatchTask extends DefaultTask {
-	@Override
-	public String getDescription() {
-		return "Continous compilation of sass/scss files to css (with optional source map) with LibSass";
-	}
+    @Override
+    public String getDescription() {
+        return "Continous compilation of sass/scss files to css (with optional source map) with LibSass";
+    }
 
-	@TaskAction
-	public void compileLibSass() throws CompilationException {
-		final Logger logger = this.getLogger();
-		final CompileLibSassTaskDelegate compileLibSassTaskDelegate = new CompileLibSassTaskDelegate(this.getProject(),
-				logger);
+    @TaskAction
+    public void compileLibSass() throws CompilationException {
+        final Logger logger = this.getLogger();
+        final CompileLibSassTaskDelegate compileLibSassTaskDelegate = new CompileLibSassTaskDelegate(
+                this.getProject(), logger);
 
-		final Path watchedDirectory = this.getWatchedDirectory(compileLibSassTaskDelegate);
+        final Path watchedDirectory = this
+                .getWatchedDirectory(compileLibSassTaskDelegate);
 
-		try {
-			final WatchService watcher = FileSystems.getDefault().newWatchService();
+        try {
+            final WatchService watcher = FileSystems.getDefault()
+                    .newWatchService();
 
-			watchedDirectory.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
-					StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
+            watchedDirectory.register(watcher,
+                    StandardWatchEventKinds.ENTRY_CREATE,
+                    StandardWatchEventKinds.ENTRY_DELETE,
+                    StandardWatchEventKinds.ENTRY_MODIFY);
 
-			logger.info("Watch Service registered for dir: " + watchedDirectory.getFileName());
+            logger.info("Watch Service registered for dir: "
+                    + watchedDirectory.getFileName());
 
-			while (true) {
-				WatchKey key;
-				try {
-					key = watcher.take();
-				} catch (final InterruptedException ex) {
-					logger.error("Wath Serice interrupted", ex);
-					return;
-				}
+            while (true) {
+                WatchKey key;
+                try {
+                    key = watcher.take();
+                } catch (final InterruptedException ex) {
+                    logger.error("Wath Service interrupted", ex);
+                    return;
+                }
 
-				for (final WatchEvent<?> event : key.pollEvents()) {
-					final WatchEvent.Kind<?> kind = event.kind();
+                for (final WatchEvent<?> event : key.pollEvents()) {
+                    final WatchEvent.Kind<?> kind = event.kind();
 
-					@SuppressWarnings("unchecked")
-					final WatchEvent<Path> ev = (WatchEvent<Path>) event;
-					final Path fileName = ev.context();
+                    @SuppressWarnings("unchecked")
+                    final WatchEvent<Path> ev = (WatchEvent<Path>) event;
+                    final Path fileName = ev.context();
 
-					logger.info(kind.name() + ": " + fileName);
+                    logger.info(kind.name() + ": " + fileName);
 
-					compileLibSassTaskDelegate.compile();
-				}
+                    compileLibSassTaskDelegate.compile();
+                }
 
-				final boolean valid = key.reset();
-				if (!valid) {
-					break;
-				}
-			}
+                final boolean valid = key.reset();
+                if (!valid) {
+                    break;
+                }
+            }
 
-		} catch (final IOException ex) {
-			logger.error("Problem on Watch Service", ex);
-		}
-	}
+        } catch (final IOException ex) {
+            logger.error("Problem on Watch Service", ex);
+        }
+    }
 
-	/**
-	 * Check and build watched directory path
-	 *
-	 * @param compileLibSassTaskDelegate
-	 * @return
-	 */
-	private Path getWatchedDirectory(final CompileLibSassTaskDelegate compileLibSassTaskDelegate) {
-		final Path watchedDirectory = compileLibSassTaskDelegate.getWatchedDirectoryPath();
-		if (watchedDirectory == null) {
-			throw new IllegalArgumentException("watchedDirectoryPath must be set");
-		}
-		if (!watchedDirectory.toFile().exists()) {
-			throw new IllegalArgumentException(watchedDirectory.toAbsolutePath().toString() + "doesn't exist");
-		}
-		return watchedDirectory;
-	}
+    /**
+     * Check and build watched directory path
+     *
+     * @param compileLibSassTaskDelegate
+     * @return
+     */
+    private Path getWatchedDirectory(
+            final CompileLibSassTaskDelegate compileLibSassTaskDelegate) {
+        final Path watchedDirectory = compileLibSassTaskDelegate
+                .getWatchedDirectoryPath();
+        if (watchedDirectory == null) {
+            throw new IllegalArgumentException(
+                    "watchedDirectoryPath must be set");
+        }
+        if (!watchedDirectory.toFile().exists()) {
+            throw new IllegalArgumentException(
+                    watchedDirectory.toAbsolutePath().toString()
+                            + "doesn't exist");
+        }
+        return watchedDirectory;
+    }
 }
