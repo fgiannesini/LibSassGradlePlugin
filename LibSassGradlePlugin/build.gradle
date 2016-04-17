@@ -30,7 +30,7 @@ dependencies {
     testCompile (
     	'junit:junit:4.12',
     	'org.projectlombok:lombok:1.16.8',
-    	'org.mockito:mockito-core:2.0.44-beta'
+    	'org.mockito:mockito-core:2.0.47-beta'
     )
 }
 
