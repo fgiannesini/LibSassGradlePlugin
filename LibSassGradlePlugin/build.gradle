@@ -7,7 +7,7 @@ apply plugin: 'signing'
 /*============ Project Properties ===========*/
 
 group = 'com.github.fgiannesini.libsass.gradle.plugin'
-version = '1.1'
+version = '1.2'
 archivesBaseName = rootProject.name
 
 sourceCompatibility = 1.8
@@ -20,8 +20,8 @@ repositories {
 
 dependencies {
 
-	compile ('io.bit3:jsass:5.1.0',
-		'org.jruby:jruby:1.7.24',
+	compile ('io.bit3:jsass:+',
+		'org.jruby:jruby:+'
 		)
 	
 	
@@ -30,7 +30,7 @@ dependencies {
     testCompile (
     	'junit:junit:4.12',
     	'org.projectlombok:lombok:1.16.8',
-    	'org.mockito:mockito-core:2.0.47-beta'
+    	'org.mockito:mockito-core:+'
     )
 }
 
@@ -54,7 +54,7 @@ artifacts {
 }
 
 signing {
-    sign configurations.archives
+    //sign configurations.archives
 }
 
 /*
