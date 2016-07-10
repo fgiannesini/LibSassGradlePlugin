@@ -85,9 +85,12 @@ public class CompileLibSassWatcher {
 
 		this.logger.info("Watch Service registered for dir: " + directory.getFileName());
 
-		for (final File subFile : directory.toFile().listFiles()) {
-			if (subFile.isDirectory()) {
-				this.registerFolderAndSubFolders(watcher, subFile.toPath());
+		File[] listFiles = directory.toFile().listFiles();
+		if (listFiles != null) {
+			for (final File subFile : listFiles) {
+				if (subFile.isDirectory()) {
+					this.registerFolderAndSubFolders(watcher, subFile.toPath());
+				}
 			}
 		}
 	}

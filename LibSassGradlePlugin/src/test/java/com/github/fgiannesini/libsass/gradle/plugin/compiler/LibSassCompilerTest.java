@@ -2,10 +2,12 @@ package com.github.fgiannesini.libsass.gradle.plugin.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.logging.Logger;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +17,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.testng.Assert;
 
 import com.github.fgiannesini.libsass.gradle.plugin.extension.PluginParametersProvider;
 
@@ -71,7 +72,7 @@ public class LibSassCompilerTest {
 
 		final File inputFile = this.folder.newFile("input");
 		final String cssText = "body{text-align:left;}";
-		FileUtils.write(inputFile, cssText);
+		FileUtils.write(inputFile, cssText, Charset.defaultCharset());
 
 		Mockito.when(this.parametersProvider.getInputUri()).thenReturn(inputFile.toURI());
 
@@ -90,7 +91,7 @@ public class LibSassCompilerTest {
 
 		final File inputFile = this.folder.newFile("input");
 		final String cssText = "body{";
-		FileUtils.write(inputFile, cssText);
+		FileUtils.write(inputFile, cssText, Charset.defaultCharset());
 		Mockito.when(this.parametersProvider.getInputUri()).thenReturn(inputFile.toURI());
 
 		// Call
@@ -114,7 +115,7 @@ public class LibSassCompilerTest {
 		compiler.generateSourceMap(output);
 
 		// Check
-		Assert.assertTrue(StringUtils.isNotBlank(FileUtils.readFileToString(sourceMapFile)));
+		Assert.assertTrue(StringUtils.isNotBlank(FileUtils.readFileToString(sourceMapFile, Charset.defaultCharset())));
 		Mockito.verify(this.logger, Mockito.never()).error(Matchers.anyString(), Matchers.any(IOException.class));
 	}
 
@@ -131,7 +132,7 @@ public class LibSassCompilerTest {
 		compiler.generateSourceMap(output);
 
 		// Check
-		Assert.assertTrue(StringUtils.isBlank(FileUtils.readFileToString(sourceMapFile)));
+		Assert.assertTrue(StringUtils.isBlank(FileUtils.readFileToString(sourceMapFile, Charset.defaultCharset())));
 		Mockito.verify(this.logger, Mockito.never()).error(Matchers.anyString(), Matchers.any(IOException.class));
 	}
 
@@ -164,7 +165,7 @@ public class LibSassCompilerTest {
 		compiler.writeCss(output);
 
 		// Check
-		Assert.assertTrue(StringUtils.isNotBlank(FileUtils.readFileToString(outputFile)));
+		Assert.assertTrue(StringUtils.isNotBlank(FileUtils.readFileToString(outputFile, Charset.defaultCharset())));
 		Mockito.verify(this.logger, Mockito.never()).error(Matchers.anyString(), Matchers.any(IOException.class));
 	}
 

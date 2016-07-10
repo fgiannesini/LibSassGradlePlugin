@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -16,7 +17,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.testng.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScssFrameworkInstallerTest {
