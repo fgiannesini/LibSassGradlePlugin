@@ -39,6 +39,7 @@ public class LibSassGradlePlugin implements Plugin<Project> {
 
 		// Task to install Compass sources
 		tasks.create("installCompass", InstallCompassTask.class);
+		
 	}
 
 }

@@ -21,15 +21,16 @@ repositories {
 dependencies {
 
 	compile ('io.bit3:jsass:+',
-		'org.jruby:jruby:+'
-		)
+		'org.jruby:jruby:+',
+		//'org.yaml:snakeyaml:1.17'
+	)
 	
 	
- 	compileOnly 'org.projectlombok:lombok:1.16.8'
+ 	compileOnly 'org.projectlombok:lombok:1.16.10'
  	
     testCompile (
-    	'junit:junit:4.12',
-    	'org.projectlombok:lombok:1.16.8',
+    	'junit:junit:4.+',
+    	'org.projectlombok:lombok:1.16.10',
     	'org.mockito:mockito-core:+'
     )
 }
@@ -114,5 +115,5 @@ tasks.withType(FindBugs) {
 
 /*============ Gradle update ===========*/
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '3.0'
 }

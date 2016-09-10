@@ -2,6 +2,7 @@ package com.github.fgiannesini.libsass.gradle.plugin.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -75,7 +76,7 @@ public class LibSassCompiler {
 			final File outputFile = new File(this.parametersProvider.getOutputUri());
 			this.logger.info("Write CSS file " + outputFile.getPath());
 			FileUtils.forceMkdir(outputFile.getParentFile());
-			FileUtils.write(outputFile, output.getCss());
+			FileUtils.write(outputFile, output.getCss(), Charset.defaultCharset());
 		} catch (final IOException e) {
 			this.logger.error("Error writing CSS file", e);
 		}
@@ -91,7 +92,7 @@ public class LibSassCompiler {
 			final File sourceMapFile = new File(this.options.getSourceMapFile());
 			this.logger.info("Write source map file " + sourceMapFile.getPath());
 			FileUtils.forceMkdir(sourceMapFile.getParentFile());
-			FileUtils.write(sourceMapFile, sourceMap);
+			FileUtils.write(sourceMapFile, sourceMap, Charset.defaultCharset());
 		} catch (final IOException e) {
 			this.logger.error("Error writing source map file", e);
 		}

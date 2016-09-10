@@ -14,9 +14,9 @@ import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginInputSyntax;
 import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginOutputStyle;
 
 /**
- * Plugin parameters provider. Parameters can be for development only ->
+ * Plugin parameters provider. Parameters can be for development only 
  * retrieved from {@link PluginParameters} <br>
- * Parameters can be for production -> retrieved from
+ * Parameters can be for production : retrieved from
  * {@link PluginProductionParameters} if defined or defaut
  * {@link PluginParameters}<br>
  * Parameters are checked and transformed to be used by the plugin
