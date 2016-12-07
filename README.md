@@ -14,6 +14,10 @@ _1.1_
 
 ##Next
 - Maintenance
+- Finding a better way to manage background process on task CompileLibSassWatcher
+- Adding relative path management for CompileLibSassWatcher, installBourbon and installCompass
+- Update readme about production/developement configurations
+- Deploy 1.2 on Maven
 
 ##Limitations
 - **installCompass** : Source modifications are applied by the plugin to avoir compilation errors:
