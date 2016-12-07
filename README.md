@@ -32,6 +32,7 @@ apply plugin: 'com.github.fgiannesini.libsass.gradle.plugin'
 
 buildscript {
     repositories {
+    	mavenLocal()
         mavenCentral()
     }
     dependencies {
@@ -39,14 +40,15 @@ buildscript {
     }
 }
 
+//On parameters, file paths can be relative from resource folder or project root folder
 libSassParameters {
 	//Type: String Mandatory
 	//File path to compile (normally import other scss files)
-	inputFilePath = "src/main/resources/scss/input.scss"
+	inputFilePath = "scss/input.scss"
 	
 	//Type: String Mandatory
 	//Compiled file path
-	outputFilePath = "src/main/resources/css/output.css"
+	outputFilePath = "css/output.css"
 	
 	//Directory to watch for continuous compilation 	
 	watchedDirectoryPath = "src/main/resources/scss"
@@ -77,7 +79,7 @@ libSassParameters {
 	
 	//Type: String 
 	//Path of source file to generate if not embedded
-	//sourceMapFilePath "src/main/resources/css/output.css.map"
+	//sourceMapFilePath "css/output.css.map"
 	
 	//Type: String Default: nested Values: nested, expanded, compact, compressed
 	//Determines the output format of the final CSS style.
@@ -87,22 +89,22 @@ libSassParameters {
 	//Paths that LibSass can look in to attempt to resolve your @import declarations. When using data, it is recommended that you use this. 
 	//';' is the path separator for Windows
 	//':' is the path separator for Linux
-	//includePaths "src/main/resources/scss-lib"
+	//includePaths "scss-lib"
 	
 	//Type: String
-	//Installation folder for bourbon sources
-	bourbonInstallationPath "src/main/resources/scss"
+    //Installation folder for bourbon sources
+    bourbonInstallationPath "scss"
 
 	//Type: String
-	//If a specific version of bourbon is necessary, last by defaut
-	//bourbonVersion "4.2.6"
+    //If a specific version of bourbon is necessary
+    //bourbonVersion "4.2.6"
 
 	//Type: String
-	//Installation folder for compass sources
-	compassInstallationPath "src/main/resources/scss"
+    //Installation folder for compass sources
+    compassInstallationPath "src/main/resources/scss"
 
 	//Type: String
-	//If a specific version of compass is necessary, last by defaut
-	//compassVersion "1.0.3"
+    //If a specific version of compass is necessary
+    //compassVersion "1.0.3"
 }
 ```
