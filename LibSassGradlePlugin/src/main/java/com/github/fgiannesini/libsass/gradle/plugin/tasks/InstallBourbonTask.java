@@ -26,7 +26,7 @@ public class InstallBourbonTask extends DefaultTask {
 		final PluginParametersProvider parametersProvider = new PluginParametersProvider(project,
 				PluginMode.DEVELOPPEMENT);
 
-		final ScssFrameworkInstaller scssFrameworkInstaller = new ScssFrameworkInstaller(project, this.getLogger());
+		final ScssFrameworkInstaller scssFrameworkInstaller = new ScssFrameworkInstaller(this.getLogger());
 
 		scssFrameworkInstaller.setInstallationPath(parametersProvider.getBourbonInstallationPath());
 		scssFrameworkInstaller.setVersionToDownload(parametersProvider.getBourbonVersion());

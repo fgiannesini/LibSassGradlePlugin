@@ -3,7 +3,6 @@ package com.github.fgiannesini.libsass.gradle.plugin.extension;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.gradle.api.Project;
 import org.gradle.api.plugins.ExtensionAware;
@@ -14,369 +13,403 @@ import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginInputSyntax;
 import com.github.fgiannesini.libsass.gradle.plugin.compiler.PluginOutputStyle;
 
 /**
- * Plugin parameters provider. Parameters can be for development only 
- * retrieved from {@link PluginParameters} <br>
+ * Plugin parameters provider. Parameters can be for development only retrieved
+ * from {@link PluginParameters} <br>
  * Parameters can be for production : retrieved from
- * {@link PluginProductionParameters} if defined or defaut
+ * {@link PluginProductionParameters} if defined or default
  * {@link PluginParameters}<br>
  * Parameters are checked and transformed to be used by the plugin
  *
  */
 public class PluginParametersProvider {
 
-	/**
-	 * Parameters for developpement build
-	 */
-	private final PluginParameters parameters;
+    /**
+     * Parameters for development build
+     */
+    private final PluginParameters parameters;
 
-	/**
-	 * Parameters for production build
-	 */
-	private PluginProductionParameters productionParameters;
+    /**
+     * Parameters for production build
+     */
+    private PluginProductionParameters productionParameters;
 
-	/**
-	 * Project root path
-	 */
-	private final Project project;
+    /**
+     * Project root path
+     */
+    private final Project project;
 
-	public PluginParametersProvider(final Project project, final PluginMode pluginMode) {
-		this.parameters = project.getExtensions().getByType(PluginParameters.class);
+    public PluginParametersProvider(final Project project,
+            final PluginMode pluginMode) {
+        this.parameters = project.getExtensions()
+                .getByType(PluginParameters.class);
 
-		if (this.parameters != null && PluginMode.PRODUCTION.equals(pluginMode)) {
-			this.productionParameters = ExtensionAware.class.cast(this.parameters).getExtensions()
-					.findByType(PluginProductionParameters.class);
-		}
-		this.project = project;
-	}
+        if (this.parameters != null
+                && PluginMode.PRODUCTION.equals(pluginMode)) {
+            this.productionParameters = ExtensionAware.class
+                    .cast(this.parameters).getExtensions()
+                    .findByType(PluginProductionParameters.class);
+        }
+        this.project = project;
+    }
 
-	/**
-	 * Default: {gradle resources}/scss/{projectName}.scss
-	 */
-	public URI getInputUri() {
+    /**
+     * Default: {gradle resources}/scss/{projectName}.scss
+     */
+    public URI getInputUri() {
 
-		String value = null;
-		String productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getInputFilePath();
-		}
+        String value = null;
+        String productionParameter = null;
+        if (this.productionParameters != null) {
+            productionParameter = this.productionParameters.getInputFilePath();
+        }
 
-		String devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getInputFilePath();
-		}
+        String devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getInputFilePath();
+        }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
 
-		if (value == null) {
-			value = "scss" + File.separator + this.project.getName().toLowerCase() + ".scss";
-		}
+        if (value == null) {
+            value = "scss" + File.separator
+                    + this.project.getName().toLowerCase() + ".scss";
+        }
 
-		final String path = this.project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-				.getByName(SourceSet.MAIN_SOURCE_SET_NAME).getResources().getAsPath();
-		final File file = Paths.get(path, value).toFile();
+        final File file = this.getResourcePath(value).toFile();
 
-		if (!file.exists()) {
-			throw new IllegalArgumentException("Input file " + file.getAbsolutePath() + " does not exist ");
-		}
-		return file.toURI();
-	}
+        if (!file.exists()) {
+            throw new IllegalArgumentException("Input file "
+                    + file.getAbsolutePath() + " does not exist ");
+        }
+        return file.toURI();
+    }
 
-	/**
-	 * Default: {gradle resources}/css/{projectName}.css
-	 */
-	public URI getOutputUri() {
+    private Path getResourcePath(final String value) {
+        Path resourcePath = this.project.getConvention()
+                .getPlugin(JavaPluginConvention.class).getSourceSets()
+                .getByName(SourceSet.MAIN_SOURCE_SET_NAME).getAllSource()
+                .getSrcDirs().iterator().next().toPath().resolve(value);
+        if (!resourcePath.toFile().exists()) {
+            resourcePath = this.project.getRootDir().toPath().resolve(value);
+        }
 
-		String value = null;
-		String productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getOutputFilePath();
-		}
+        return resourcePath;
+    }
 
-		String devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getOutputFilePath();
-		}
+    /**
+     * Default: {gradle resources}/css/{projectName}.css
+     */
+    public URI getOutputUri() {
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
+        String value = null;
+        String productionParameter = null;
+        if (this.productionParameters != null) {
+            productionParameter = this.productionParameters.getOutputFilePath();
+        }
 
-		if (value == null) {
-			value = "css" + File.separator + this.project.getName().toLowerCase() + ".scss";
-		}
+        String devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getOutputFilePath();
+        }
 
-		final String path = this.project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-				.getByName(SourceSet.MAIN_SOURCE_SET_NAME).getResources().getAsPath();
-		return Paths.get(path, value).toUri();
-	}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
 
-	/**
-	 * Default: false 'true' includes the contents in the source map information
-	 */
-	public Boolean getSourceMapContents() {
-		Boolean value = Boolean.FALSE;
-		Boolean productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getSourceMapContents();
-		}
+        if (value == null) {
+            value = "css" + File.separator
+                    + this.project.getName().toLowerCase() + ".scss";
+        }
 
-		Boolean devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getSourceMapContents();
-		}
+        return this.getResourcePath(value).toUri();
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value;
-	}
+    /**
+     * Default: false 'true' includes the contents in the source map information
+     */
+    public Boolean getSourceMapContents() {
+        Boolean value = Boolean.FALSE;
+        Boolean productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getSourceMapContents() != null) {
+            productionParameter = this.productionParameters
+                    .getSourceMapContents();
+        }
 
-	/**
-	 * Default: false 'true' embeds the source map as a data URI
-	 */
-	public Boolean getSourceMapEmbed() {
-		Boolean value = Boolean.FALSE;
-		Boolean productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getSourceMapEmbed();
-		}
+        Boolean devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getSourceMapContents();
+        }
 
-		Boolean devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getSourceMapEmbed();
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value;
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value;
-	}
+    /**
+     * Default: false 'true' embeds the source map as a data URI
+     */
+    public Boolean getSourceMapEmbed() {
+        Boolean value = Boolean.FALSE;
+        Boolean productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getSourceMapEmbed() != null) {
+            productionParameter = this.productionParameters.getSourceMapEmbed();
+        }
 
-	/**
-	 * Default: false. 'true' enables additional debugging information in the
-	 * output file as CSS comments
-	 */
-	public Boolean getSourceComments() {
-		Boolean value = Boolean.FALSE;
-		Boolean productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getSourceComments();
-		}
+        Boolean devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getSourceMapEmbed();
+        }
 
-		Boolean devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getSourceComments();
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value;
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value;
-	}
+    /**
+     * Default: false. 'true' enables additional debugging information in the
+     * output file as CSS comments
+     */
+    public Boolean getSourceComments() {
+        Boolean value = Boolean.FALSE;
+        Boolean productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getSourceComments() != null) {
+            productionParameter = this.productionParameters.getSourceComments();
+        }
 
-	/**
-	 * Default: false 'true' values disable the inclusion of source map
-	 * information in the output file
-	 */
-	public boolean getOmitSourceMappingUrl() {
-		Boolean value = Boolean.FALSE;
-		Boolean productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getOmitSourceMappingURL();
-		}
+        Boolean devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getSourceComments();
+        }
 
-		Boolean devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getOmitSourceMappingURL();
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value;
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value.booleanValue();
-	}
+    /**
+     * Default: false 'true' values disable the inclusion of source map
+     * information in the output file
+     */
+    public boolean getOmitSourceMappingUrl() {
+        Boolean value = Boolean.FALSE;
+        Boolean productionParameter = null;
+        if (this.productionParameters != null && this.productionParameters
+                .getOmitSourceMappingURL() != null) {
+            productionParameter = this.productionParameters
+                    .getOmitSourceMappingURL();
+        }
 
-	/**
-	 * Default: 'scss' Input syntax 'scss' or 'sass'
-	 */
-	public PluginInputSyntax getInputSyntax() {
-		PluginInputSyntax value = PluginInputSyntax.SCSS;
-		PluginInputSyntax productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = PluginInputSyntax.valueOf(this.productionParameters.getInputSyntax());
-		}
+        Boolean devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getOmitSourceMappingURL();
+        }
 
-		PluginInputSyntax devParameter = null;
-		if (this.parameters != null) {
-			devParameter = PluginInputSyntax.valueOf(this.parameters.getInputSyntax());
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value.booleanValue();
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value;
-	}
+    /**
+     * Default: 'scss' Input syntax 'scss' or 'sass'
+     */
+    public PluginInputSyntax getInputSyntax() {
+        PluginInputSyntax value = PluginInputSyntax.SCSS;
+        PluginInputSyntax productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getInputSyntax() != null) {
+            productionParameter = PluginInputSyntax
+                    .valueOf(this.productionParameters.getInputSyntax());
+        }
 
-	/**
-	 * Default: nested Values: nested, expanded, compact, compressed Determines
-	 * the output format of the final CSS style.
-	 */
-	public PluginOutputStyle getOutputStyle() {
-		PluginOutputStyle value = PluginOutputStyle.NESTED;
-		PluginOutputStyle productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = PluginOutputStyle.valueOf(this.productionParameters.getOutputStyle());
-		}
+        PluginInputSyntax devParameter = null;
+        if (this.parameters != null
+                && this.parameters.getInputSyntax() != null) {
+            devParameter = PluginInputSyntax
+                    .valueOf(this.parameters.getInputSyntax());
+        }
 
-		PluginOutputStyle devParameter = null;
-		if (this.parameters != null) {
-			devParameter = PluginOutputStyle.valueOf(this.parameters.getOutputStyle());
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value;
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value;
-	}
+    /**
+     * Default: nested Values: nested, expanded, compact, compressed Determines
+     * the output format of the final CSS style.
+     */
+    public PluginOutputStyle getOutputStyle() {
+        PluginOutputStyle value = PluginOutputStyle.NESTED;
+        PluginOutputStyle productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getOutputStyle() != null) {
+            productionParameter = PluginOutputStyle
+                    .valueOf(this.productionParameters.getOutputStyle());
+        }
 
-	/**
-	 * Default: 5 Used to determine how many digits after the decimal will be
-	 * allowed. For instance, if you had a decimal number
-	 */
-	public int getPrecision() {
-		Integer value = Integer.valueOf(5);
-		Integer productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = Integer.valueOf(this.productionParameters.getInputSyntax());
-		}
+        PluginOutputStyle devParameter = null;
+        if (this.parameters != null
+                && this.parameters.getOutputStyle() != null) {
+            devParameter = PluginOutputStyle
+                    .valueOf(this.parameters.getOutputStyle());
+        }
 
-		Integer devParameter = null;
-		if (this.parameters != null) {
-			devParameter = Integer.valueOf(this.parameters.getInputSyntax());
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value;
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value.intValue();
-	}
+    /**
+     * Default: 5 Used to determine how many digits after the decimal will be
+     * allowed. For instance, if you had a decimal number
+     */
+    public int getPrecision() {
+        Integer value = Integer.valueOf(5);
+        Integer productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getInputSyntax() != null) {
+            productionParameter = Integer
+                    .valueOf(this.productionParameters.getInputSyntax());
+        }
 
-	/**
-	 * Default: "" Paths that LibSass can look in to attempt to resolve your
-	 * declarations. When using data, it is recommended that you use this. ';'
-	 * is the path separator for Windows ':' is the path separator for Linux
-	 */
-	public String[] getIncludePaths() {
-		String value = "";
-		String productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getIncludePaths();
-		}
+        Integer devParameter = null;
+        if (this.parameters != null
+                && this.parameters.getInputSyntax() != null) {
+            devParameter = Integer.valueOf(this.parameters.getInputSyntax());
+        }
 
-		String devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getIncludePaths();
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value.intValue();
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
-		return value.split(File.pathSeparator);
-	}
+    /**
+     * Default: "" Paths that LibSass can look in to attempt to resolve your
+     * declarations. When using data, it is recommended that you use this. ';'
+     * is the path separator for Windows ':' is the path separator for Linux
+     */
+    public String[] getIncludePaths() {
+        String value = "";
+        String productionParameter = null;
+        if (this.productionParameters != null
+                && this.productionParameters.getIncludePaths() != null) {
+            productionParameter = this.productionParameters.getIncludePaths();
+        }
 
-	/**
-	 * Path of source file to generate if not embedded
-	 */
-	public URI getSourceMapUri() {
-		String value = null;
-		String productionParameter = null;
-		if (this.productionParameters != null) {
-			productionParameter = this.productionParameters.getSourceMapFilePath();
-		}
+        String devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getIncludePaths();
+        }
 
-		String devParameter = null;
-		if (this.parameters != null) {
-			devParameter = this.parameters.getSourceMapFilePath();
-		}
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
+        return value.split(File.pathSeparator);
+    }
 
-		if (productionParameter != null) {
-			value = productionParameter;
-		} else if (devParameter != null) {
-			value = devParameter;
-		}
+    /**
+     * Path of source file to generate if not embedded
+     */
+    public URI getSourceMapUri() {
+        String value = null;
+        String productionParameter = null;
+        if (this.productionParameters != null) {
+            productionParameter = this.productionParameters
+                    .getSourceMapFilePath();
+        }
 
-		final String path = this.project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-				.getByName(SourceSet.MAIN_SOURCE_SET_NAME).getResources().getAsPath();
-		return Paths.get(path, value).toUri();
-	}
+        String devParameter = null;
+        if (this.parameters != null) {
+            devParameter = this.parameters.getSourceMapFilePath();
+        }
 
-	/**
-	 * Path for compass installation
-	 */
-	public Path getCompassInstallationPath() {
-		String value = "scss";
+        if (productionParameter != null) {
+            value = productionParameter;
+        } else if (devParameter != null) {
+            value = devParameter;
+        }
 
-		if (this.parameters != null) {
-			value = this.parameters.getCompassInstallationPath();
-		}
+        if (value == null) {
+            return null;
+        }
 
-		final String path = this.project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-				.getByName(SourceSet.MAIN_SOURCE_SET_NAME).getResources().getAsPath();
+        return this.getResourcePath(value).toUri();
+    }
 
-		return Paths.get(path, value);
-	}
+    /**
+     * Path for compass installation
+     */
+    public Path getCompassInstallationPath() {
+        String value = "scss";
 
-	public String getCompassVersion() {
-		String value = "";
-		if (this.parameters != null) {
-			value = this.parameters.getCompassVersion();
-		}
-		return value;
-	}
+        if (this.parameters != null
+                && this.parameters.getCompassInstallationPath() != null) {
+            value = this.parameters.getCompassInstallationPath();
+        }
 
-	/**
-	 * Path for bourbon installation
-	 */
-	public Path getBourbonInstallationPath() {
-		String value = "scss";
+        return this.getResourcePath(value);
+    }
 
-		if (this.parameters != null) {
-			value = this.parameters.getBourbonInstallationPath();
-		}
+    public String getCompassVersion() {
+        String value = "";
+        if (this.parameters != null
+                && this.parameters.getCompassVersion() != null) {
+            value = this.parameters.getCompassVersion();
+        }
+        return value;
+    }
 
-		final String path = this.project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-				.getByName(SourceSet.MAIN_SOURCE_SET_NAME).getResources().getAsPath();
+    /**
+     * Path for bourbon installation
+     */
+    public Path getBourbonInstallationPath() {
+        String value = "scss";
 
-		return Paths.get(path, value);
-	}
+        if (this.parameters != null
+                && this.parameters.getBourbonInstallationPath() != null) {
+            value = this.parameters.getBourbonInstallationPath();
+        }
 
-	public String getBourbonVersion() {
-		String value = "";
-		if (this.parameters != null) {
-			value = this.parameters.getBourbonVersion();
-		}
-		return value;
-	}
+        return this.getResourcePath(value);
+    }
+
+    public String getBourbonVersion() {
+        String value = "";
+        if (this.parameters != null
+                && this.parameters.getBourbonVersion() != null) {
+            value = this.parameters.getBourbonVersion();
+        }
+        return value;
+    }
 }

@@ -16,7 +16,7 @@ import org.gradle.api.logging.Logger;
 public class CompassInstaller extends ScssFrameworkInstaller {
 
 	public CompassInstaller(final Project project, final Logger logger) {
-		super(project, logger);
+		super(logger);
 	}
 
 	@Override

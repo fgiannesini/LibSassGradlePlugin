@@ -22,104 +22,123 @@ import io.bit3.jsass.OutputStyle;
  */
 public class LibSassCompiler {
 
-	/**
-	 * LibSass options
-	 */
-	private Options options;
+    /**
+     * LibSass options
+     */
+    private Options options;
 
-	/**
-	 * Gradle logger
-	 */
-	private final Logger logger;
+    /**
+     * Gradle logger
+     */
+    private final Logger logger;
 
-	private final PluginParametersProvider parametersProvider;
+    private final PluginParametersProvider parametersProvider;
 
-	public LibSassCompiler(final Logger logger, final PluginParametersProvider parametersProvider) {
-		this.logger = logger;
-		this.parametersProvider = parametersProvider;
-		this.init();
-	}
+    public LibSassCompiler(final Logger logger,
+            final PluginParametersProvider parametersProvider) {
+        this.logger = logger;
+        this.parametersProvider = parametersProvider;
 
-	private void init() {
-		this.options = new Options();
+        this.init();
+    }
 
-		this.options.setOutputStyle(OutputStyle.values()[this.parametersProvider.getOutputStyle().ordinal()]);
-		Stream<File> files = Arrays.stream(this.parametersProvider.getIncludePaths()).map(File::new);
-		if (this.logger.isInfoEnabled()) {
-			files = files.peek(file -> this.logger.info(file.getPath()));
-		}
-		files.forEach(this.options.getIncludePaths()::add);
-		this.options.setSourceComments(this.parametersProvider.getSourceComments());
-		this.options.setOmitSourceMapUrl(this.parametersProvider.getOmitSourceMappingUrl());
-		this.options.setSourceMapEmbed(this.parametersProvider.getSourceMapEmbed());
-		this.options.setSourceMapContents(this.parametersProvider.getSourceMapContents());
-		this.options.setIsIndentedSyntaxSrc(PluginInputSyntax.SASS.equals(this.parametersProvider.getInputSyntax()));
-		this.options.setPrecision(this.parametersProvider.getPrecision());
-		this.options.setSourceMapFile(this.parametersProvider.getSourceMapUri());
-	}
+    private void init() {
+        this.options = new Options();
 
-	/**
-	 * Compile an input file to an output file (and optionnaly a map file).
-	 * Files path are built if necessary
-	 *
-	 * @throws CompilationException
-	 */
-	public void compileFile() throws CompilationException {
+        this.options.setOutputStyle(OutputStyle.values()[this.parametersProvider
+                .getOutputStyle().ordinal()]);
+        Stream<File> files = Arrays
+                .stream(this.parametersProvider.getIncludePaths())
+                .map(File::new);
+        if (this.logger.isInfoEnabled()) {
+            files = files.peek(file -> this.logger.info(file.getPath()));
+        }
+        files.forEach(this.options.getIncludePaths()::add);
 
-		final Output output = this.launchCompilation();
-		this.writeCss(output);
-		this.generateSourceMap(output);
-	}
+        this.options
+                .setSourceComments(this.parametersProvider.getSourceComments());
+        this.options.setOmitSourceMapUrl(
+                this.parametersProvider.getOmitSourceMappingUrl());
 
-	protected void writeCss(final Output output) {
-		try {
-			final File outputFile = new File(this.parametersProvider.getOutputUri());
-			this.logger.info("Write CSS file " + outputFile.getPath());
-			FileUtils.forceMkdir(outputFile.getParentFile());
-			FileUtils.write(outputFile, output.getCss(), Charset.defaultCharset());
-		} catch (final IOException e) {
-			this.logger.error("Error writing CSS file", e);
-		}
-	}
+        this.options
+                .setSourceMapEmbed(this.parametersProvider.getSourceMapEmbed());
+        this.options.setSourceMapContents(
+                this.parametersProvider.getSourceMapContents());
 
-	protected void generateSourceMap(final Output output) {
-		final String sourceMap = output.getSourceMap();
-		if (StringUtils.isBlank(sourceMap)) {
-			this.logger.info("No sourcemap file to generate");
-			return;
-		}
-		try {
-			final File sourceMapFile = new File(this.options.getSourceMapFile());
-			this.logger.info("Write source map file " + sourceMapFile.getPath());
-			FileUtils.forceMkdir(sourceMapFile.getParentFile());
-			FileUtils.write(sourceMapFile, sourceMap, Charset.defaultCharset());
-		} catch (final IOException e) {
-			this.logger.error("Error writing source map file", e);
-		}
-	}
+        this.options.setIsIndentedSyntaxSrc(PluginInputSyntax.SASS
+                .equals(this.parametersProvider.getInputSyntax()));
 
-	protected Output launchCompilation() throws CompilationException {
-		if (this.logger.isInfoEnabled()) {
-			this.logger.info("Launching compilation");
-		}
-		final io.bit3.jsass.Compiler compiler = new io.bit3.jsass.Compiler();
+        this.options.setPrecision(this.parametersProvider.getPrecision());
+        this.options
+                .setSourceMapFile(this.parametersProvider.getSourceMapUri());
+    }
 
-		try {
-			final Output output = compiler.compileFile(this.parametersProvider.getInputUri(),
-					this.parametersProvider.getOutputUri(), this.options);
+    /**
+     * Compile an input file to an output file (and optionnaly a map file).
+     * Files path are built if necessary
+     *
+     * @throws CompilationException
+     */
+    public void compileFile() throws CompilationException {
+        final Output output = this.launchCompilation();
+        this.writeCss(output);
+        this.generateSourceMap(output);
+    }
 
-			if (this.logger.isInfoEnabled()) {
-				this.logger.info("End of compilation");
-			}
-			return output;
-		} catch (final CompilationException compilationException) {
-			this.logger.error(compilationException.getErrorFile());
-			this.logger.error(compilationException.getErrorJson());
-			this.logger.error(compilationException.getErrorMessage());
-			this.logger.error(compilationException.getErrorSrc());
-			this.logger.error(compilationException.getErrorText());
-			throw compilationException;
-		}
-	}
+    protected void writeCss(final Output output) {
+        try {
+            final File outputFile = new File(
+                    this.parametersProvider.getOutputUri());
+            this.logger.info("Write CSS file " + outputFile.getPath());
+            FileUtils.forceMkdir(outputFile.getParentFile());
+            FileUtils.write(outputFile, output.getCss(),
+                    Charset.defaultCharset());
+        } catch (final IOException e) {
+            this.logger.error("Error writing CSS file", e);
+        }
+    }
+
+    protected void generateSourceMap(final Output output) {
+        final String sourceMap = output.getSourceMap();
+        if (StringUtils.isBlank(sourceMap)) {
+            this.logger.info("No sourcemap file to generate");
+            return;
+        }
+        try {
+            final File sourceMapFile = new File(
+                    this.options.getSourceMapFile());
+            this.logger
+                    .info("Write source map file " + sourceMapFile.getPath());
+            FileUtils.forceMkdir(sourceMapFile.getParentFile());
+            FileUtils.write(sourceMapFile, sourceMap, Charset.defaultCharset());
+        } catch (final IOException e) {
+            this.logger.error("Error writing source map file", e);
+        }
+    }
+
+    protected Output launchCompilation() throws CompilationException {
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info("Launching compilation");
+        }
+        final io.bit3.jsass.Compiler compiler = new io.bit3.jsass.Compiler();
+
+        try {
+            final Output output = compiler.compileFile(
+                    this.parametersProvider.getInputUri(),
+                    this.parametersProvider.getOutputUri(), this.options);
+
+            if (this.logger.isInfoEnabled()) {
+                this.logger.info("End of compilation");
+            }
+            return output;
+        } catch (final CompilationException compilationException) {
+            this.logger.error(compilationException.getErrorFile());
+            this.logger.error(compilationException.getErrorJson());
+            this.logger.error(compilationException.getErrorMessage());
+            this.logger.error(compilationException.getErrorSrc());
+            this.logger.error(compilationException.getErrorText());
+            throw compilationException;
+        }
+    }
 
 }

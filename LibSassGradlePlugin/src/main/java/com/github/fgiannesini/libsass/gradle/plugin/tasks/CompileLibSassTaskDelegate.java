@@ -15,23 +15,25 @@ import io.bit3.jsass.CompilationException;
  */
 public class CompileLibSassTaskDelegate {
 
-	/**
-	 * Lib sass compiler
-	 */
-	private final LibSassCompiler libSassCompiler;
+    /**
+     * Lib sass compiler
+     */
+    private final LibSassCompiler libSassCompiler;
 
-	public CompileLibSassTaskDelegate(final Project project, final Logger logger) {
-		final PluginParametersProvider parametersProvider = new PluginParametersProvider(project,
-				PluginMode.PRODUCTION);
-		this.libSassCompiler = new LibSassCompiler(logger, parametersProvider);
-	}
+    public CompileLibSassTaskDelegate(final Project project,
+            final Logger logger) {
+        final PluginParametersProvider parametersProvider = new PluginParametersProvider(
+                project, PluginMode.PRODUCTION);
 
-	/**
-	 * Launche libsass compilation
-	 *
-	 * @throws CompilationException
-	 */
-	public void compile() throws CompilationException {
-		this.libSassCompiler.compileFile();
-	}
+        this.libSassCompiler = new LibSassCompiler(logger, parametersProvider);
+    }
+
+    /**
+     * Launche libsass compilation
+     *
+     * @throws CompilationException
+     */
+    public void compile() throws CompilationException {
+        this.libSassCompiler.compileFile();
+    }
 }
