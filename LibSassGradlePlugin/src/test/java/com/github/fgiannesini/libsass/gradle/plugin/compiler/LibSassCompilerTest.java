@@ -205,7 +205,7 @@ public class LibSassCompilerTest {
     public void writeCss_IOException() throws IOException {
         // Prepare
         final File outputFile = new File(
-                this.folder.getRoot().getAbsolutePath() + File.separator + "?");
+                this.folder.getRoot().getAbsolutePath() + File.separator + "/");
         Mockito.when(this.parametersProvider.getOutputUri())
                 .thenReturn(outputFile.toURI());
 
