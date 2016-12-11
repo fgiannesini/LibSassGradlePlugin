@@ -10,17 +10,17 @@ import io.bit3.jsass.CompilationException;
 /**
  * LibSass compilation task call
  */
-public class CompileLibSassTask extends DefaultTask {
+public class CompileLibSassProductionTask extends DefaultTask {
 
     @Override
     public String getDescription() {
-        return "Compile sass/scss files to css (with optional source map) with LibSass";
+        return "Compile sass/scss files to css (with optional source map) with LibSass and production configuration";
     }
 
     @TaskAction
     public void compileLibSass() throws CompilationException {
         final CompileLibSassTaskDelegate compileLibSassTaskDelegate = new CompileLibSassTaskDelegate(
-                this.getProject(), this.getLogger(), PluginMode.DEVELOPPEMENT);
+                this.getProject(), this.getLogger(), PluginMode.PRODUCTION);
         compileLibSassTaskDelegate.compile();
     }
 }

@@ -21,9 +21,9 @@ public class CompileLibSassTaskDelegate {
     private final LibSassCompiler libSassCompiler;
 
     public CompileLibSassTaskDelegate(final Project project,
-            final Logger logger) {
+            final Logger logger, final PluginMode pluginMode) {
         final PluginParametersProvider parametersProvider = new PluginParametersProvider(
-                project, PluginMode.PRODUCTION);
+                project, pluginMode);
 
         this.libSassCompiler = new LibSassCompiler(logger, parametersProvider);
     }

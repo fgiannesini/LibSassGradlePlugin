@@ -238,15 +238,15 @@ public class PluginParametersProvider {
         PluginInputSyntax productionParameter = null;
         if (this.productionParameters != null
                 && this.productionParameters.getInputSyntax() != null) {
-            productionParameter = PluginInputSyntax
-                    .valueOf(this.productionParameters.getInputSyntax());
+            productionParameter = PluginInputSyntax.valueOf(
+                    this.productionParameters.getInputSyntax().toUpperCase());
         }
 
         PluginInputSyntax devParameter = null;
         if (this.parameters != null
                 && this.parameters.getInputSyntax() != null) {
             devParameter = PluginInputSyntax
-                    .valueOf(this.parameters.getInputSyntax());
+                    .valueOf(this.parameters.getInputSyntax().toUpperCase());
         }
 
         if (productionParameter != null) {
@@ -266,15 +266,15 @@ public class PluginParametersProvider {
         PluginOutputStyle productionParameter = null;
         if (this.productionParameters != null
                 && this.productionParameters.getOutputStyle() != null) {
-            productionParameter = PluginOutputStyle
-                    .valueOf(this.productionParameters.getOutputStyle());
+            productionParameter = PluginOutputStyle.valueOf(
+                    this.productionParameters.getOutputStyle().toUpperCase());
         }
 
         PluginOutputStyle devParameter = null;
         if (this.parameters != null
                 && this.parameters.getOutputStyle() != null) {
             devParameter = PluginOutputStyle
-                    .valueOf(this.parameters.getOutputStyle());
+                    .valueOf(this.parameters.getOutputStyle().toUpperCase());
         }
 
         if (productionParameter != null) {
@@ -411,5 +411,9 @@ public class PluginParametersProvider {
             value = this.parameters.getBourbonVersion();
         }
         return value;
+    }
+
+    public Path getLibsassWatchDirectory() {
+        return this.getResourcePath(this.parameters.getWatchedDirectoryPath());
     }
 }
