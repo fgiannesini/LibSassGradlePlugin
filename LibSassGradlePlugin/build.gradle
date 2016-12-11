@@ -22,7 +22,6 @@ dependencies {
 
 	compile ('io.bit3:jsass:+',
 		'org.jruby:jruby:+',
-		//'org.yaml:snakeyaml:1.17'
 	)
 	
 	
