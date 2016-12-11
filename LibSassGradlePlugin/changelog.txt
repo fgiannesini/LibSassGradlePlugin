@@ -1,9 +1,10 @@
 =================
-1.2 (2016-04-10)
+1.2 (2016-12-11)
 =================
 -Enhance compileLibSassWithWatch : Compilation of subfolders
-Add configuration dev/prod
--Update to jsass 5.3
+-Add compileLibSassProductionTask for launching compilation with a production configuration
+-Add configuration override via libSassProductionParameters for compileLibSassProductionTask
+-Update to jsass 5.3.1
 
 =================
 1.1 (2016-04-10)
