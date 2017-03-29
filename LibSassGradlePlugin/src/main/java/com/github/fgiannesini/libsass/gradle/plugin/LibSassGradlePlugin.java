@@ -35,7 +35,7 @@ public class LibSassGradlePlugin implements Plugin<Project> {
         tasks.create("compileLibSass", CompileLibSassTask.class);
 
         // Task for libsass compilation with production configuration
-        tasks.create("compileLibSassProdution",
+        tasks.create("compileLibSassProduction",
                 CompileLibSassProductionTask.class);
 
         // Task for continous compilation
