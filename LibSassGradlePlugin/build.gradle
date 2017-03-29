@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
 
-	compile ('io.bit3:jsass:5.3.1',
+	compile ('io.bit3:jsass:5.5.0',
 		'org.jruby:jruby:9.1.6.0',
 	)
 	
