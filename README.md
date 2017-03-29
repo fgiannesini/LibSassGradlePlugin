@@ -3,7 +3,7 @@ A gradle plugin to compile scss/sass with jsass (libsass wrapper for java)
 - _Need Gradle Version >= 2.12_
 - _Need Java Version >= 8_
 
-##Available tasks
+## Available tasks
 _1.0_
 - **compileLibSass** : Compile sass/scss files to css (with optional source map) with LibSass
 - **compileLibSassWithWatch** : Continuous compilation of sass/scss files to css (with optional source map) with LibSass
@@ -15,11 +15,11 @@ _1.1_
 _1.2_
 - **compileLibSassProductionTask** : Compile sass/scss files to css (with optional source map) with LibSass and production configuration
 
-##Next
+## Next
 - Maintenance
 - Finding a better way to manage background process on task CompileLibSassWatcher
 
-##Limitations
+## Limitations
 - **installCompass** : Source modifications are applied by the plugin to avoir compilation errors:
   * Correct import path, compass uses absolute path, libsass needs relative path.
   * Compass calls "prefix-usage", a ruby function from compass gem. An error is thrown by Libsass on compilation.
@@ -28,7 +28,7 @@ The choice here is to replace this function by a constant to always add prefixes
 (workaround: https://github.com/sass/libsass/issues/1936)
 
 
-##Configuration
+## Configuration
 
 ```groovy
 apply plugin: 'java'
