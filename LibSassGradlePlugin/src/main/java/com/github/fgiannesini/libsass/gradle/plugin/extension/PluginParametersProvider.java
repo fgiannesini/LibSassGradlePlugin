@@ -124,7 +124,7 @@ public class PluginParametersProvider {
 
         if (value == null) {
             value = "css" + File.separator
-                    + this.project.getName().toLowerCase() + ".scss";
+                    + this.project.getName().toLowerCase() + ".css";
         }
 
         return this.getResourcePath(value).toUri();
