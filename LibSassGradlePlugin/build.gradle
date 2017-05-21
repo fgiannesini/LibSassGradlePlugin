@@ -114,5 +114,5 @@ tasks.withType(FindBugs) {
 
 /*============ Gradle update ===========*/
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+    gradleVersion = '3.5.0'
 }
