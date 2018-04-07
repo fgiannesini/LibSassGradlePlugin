@@ -11,13 +11,10 @@ import org.gradle.api.logging.Logger;
 
 import com.github.fgiannesini.libsass.gradle.plugin.installer.jruby.JRubyCaller;
 
-import lombok.Setter;
-
 /**
  * Library installer for scss framework using JRuby
  *
  */
-@Setter
 public class ScssFrameworkInstaller {
 
     /**
@@ -170,4 +167,13 @@ public class ScssFrameworkInstaller {
         }
         return unpackedFiles[0];
     }
+
+    public void setVersionToDownload(final String versionToDownload) {
+        this.versionToDownload = versionToDownload;
+    }
+
+    public void setInstallationPath(final Path installationPath) {
+        this.installationPath = installationPath;
+    }
+
 }

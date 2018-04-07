@@ -3,15 +3,9 @@ package com.github.fgiannesini.libsass.gradle.plugin.installer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Framework properties
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
 public enum FrameworkPropertiesEnum {
 
     BOURBON("bourbon", Paths.get("app", "assets", "stylesheets"), "bourbon"),
@@ -32,4 +26,25 @@ public enum FrameworkPropertiesEnum {
      * Name of installation folder
      */
     private String folderInstallationName;
+
+    private FrameworkPropertiesEnum(final String gemName,
+            final Path internalGemSourcesPath,
+            final String folderInstallationName) {
+        this.gemName = gemName;
+        this.internalGemSourcesPath = internalGemSourcesPath;
+        this.folderInstallationName = folderInstallationName;
+    }
+
+    public String getGemName() {
+        return this.gemName;
+    }
+
+    public Path getInternalGemSourcesPath() {
+        return this.internalGemSourcesPath;
+    }
+
+    public String getFolderInstallationName() {
+        return this.folderInstallationName;
+    }
+
 }

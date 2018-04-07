@@ -9,18 +9,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.logging.Logger;
 import org.jruby.Main;
 
-import lombok.AllArgsConstructor;
-
 /**
  * Call JRuby functions
  */
-@AllArgsConstructor
 public class JRubyCaller {
 
     /**
      * Gradle logger
      */
     private final Logger logger;
+
+    public JRubyCaller(final Logger logger) {
+        this.logger = logger;
+    }
 
     /**
      * Unpack gem in temporary folder (auto delete on exit)
