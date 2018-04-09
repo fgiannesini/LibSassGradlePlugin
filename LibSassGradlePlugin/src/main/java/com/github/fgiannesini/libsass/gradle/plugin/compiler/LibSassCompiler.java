@@ -1,8 +1,13 @@
 package com.github.fgiannesini.libsass.gradle.plugin.compiler;
 
+import io.bit3.jsass.CompilationException;
+import io.bit3.jsass.Options;
+import io.bit3.jsass.Output;
+import io.bit3.jsass.OutputStyle;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -11,11 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.logging.Logger;
 
 import com.github.fgiannesini.libsass.gradle.plugin.extension.PluginParametersProvider;
-
-import io.bit3.jsass.CompilationException;
-import io.bit3.jsass.Options;
-import io.bit3.jsass.Output;
-import io.bit3.jsass.OutputStyle;
 
 /**
  * LibSass compiler call
@@ -92,7 +92,7 @@ public class LibSassCompiler {
             this.logger.info("Write CSS file " + outputFile.getPath());
             FileUtils.forceMkdir(outputFile.getParentFile());
             FileUtils.write(outputFile, output.getCss(),
-                    Charset.defaultCharset());
+                    StandardCharsets.UTF_8);
         } catch (final IOException e) {
             this.logger.error("Error writing CSS file", e);
         }
@@ -110,7 +110,7 @@ public class LibSassCompiler {
             this.logger
                     .info("Write source map file " + sourceMapFile.getPath());
             FileUtils.forceMkdir(sourceMapFile.getParentFile());
-            FileUtils.write(sourceMapFile, sourceMap, Charset.defaultCharset());
+            FileUtils.write(sourceMapFile, sourceMap, StandardCharsets.UTF_8);
         } catch (final IOException e) {
             this.logger.error("Error writing source map file", e);
         }
